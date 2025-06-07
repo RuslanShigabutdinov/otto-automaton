@@ -3,3 +3,4 @@ env/
 auth/*
 __pycache__/
 libs/_creds.py
+bat/

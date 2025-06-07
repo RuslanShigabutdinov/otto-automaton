@@ -6,6 +6,7 @@ import win32clipboard
 from keysConfig import *
 from libs._dbSQLite import Database
 from libs._afterbuy import displayEbayLister
+from _path import currentPath
 
 def getContentFromClipboard():
     win32clipboard.OpenClipboard()
@@ -16,8 +17,8 @@ def getContentFromClipboard():
     return cleaned
 
 sessionFiles = {
-    'otto': 'auth/otto.json',
-    'afterbuy': 'auth/afterbuy.json'
+    'otto': f'{currentPath()}/auth/otto.json',
+    'afterbuy': f'{currentPath()}/auth/afterbuy.json'
 }
 
 def clickButtonIfAppears(page, buttonText="Kategorie wechseln", timeout=500):
@@ -127,7 +128,7 @@ def listenForKeys(page, db: Database, context):
 
 def runWithSavedSession():
     with sync_playwright() as p:
-        browser = p.firefox.launch(headless=False)  # Non-headless for manual interaction
+        browser = p.firefox.launch(headless=False)
         context = browser.new_context(storage_state=sessionFiles['otto'])
 
         page = context.new_page()

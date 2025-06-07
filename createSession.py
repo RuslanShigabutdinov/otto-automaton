@@ -2,7 +2,7 @@ from playwright.sync_api import sync_playwright
 import libs._creds as _creds
 from libs._googleAuth import generateTotp
 from time import sleep
-from libs._path import currentPath
+from _path import currentPath
 
 
 def insertLoginOtto(page, server):
