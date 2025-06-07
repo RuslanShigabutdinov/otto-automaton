@@ -1,0 +1,5 @@
+sql.db
+env/
+auth/*
+__pycache__/
+libs/_creds.py

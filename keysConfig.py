@@ -1,0 +1,5 @@
+insertEanButton = 'f2'
+insertCategoryButton = 'f3'
+publishProductButton = 'f4'
+afterbuyButton = 'f8'
+exitProgramButton = 'f12'
