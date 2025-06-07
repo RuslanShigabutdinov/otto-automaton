@@ -2,19 +2,12 @@ from playwright.sync_api import sync_playwright
 from time import sleep
 from libs._eanFinder import getArtNumFromUrl, artNumToEan
 import keyboard
-import win32clipboard
 from keysConfig import *
 from libs._dbSQLite import Database
 from libs._afterbuy import displayEbayLister
 from _path import currentPath
+from libs._clipboard import getContentFromClipboard
 
-def getContentFromClipboard():
-    win32clipboard.OpenClipboard()
-    data = win32clipboard.GetClipboardData()
-    win32clipboard.CloseClipboard()
-    
-    cleaned = data.strip()
-    return cleaned
 
 sessionFiles = {
     'otto': f'{currentPath()}/auth/otto.json',
@@ -42,10 +35,6 @@ def waitForEanToAppear(page, ean, timeout=8000):
             return false;
         }}
     """, arg=[ean], timeout=timeout)
-
-def setupClicks(page):
-    page.wait_for_selector('#cookieBannerButtonAccept', state='attached')
-    page.click('#cookieBannerButtonAccept')  # Accept cookies
 
 def searchProduct(page, ean):
     page.wait_for_selector('#searchField', state='attached')
@@ -142,7 +131,6 @@ def runWithSavedSession():
 {exitProgramButton} - Выходит из программы
         ''')
         db = Database()
-        setupClicks(page)
         listenForKeys(page, db, context)
         browser.close()
 

@@ -1,16 +1,22 @@
 from libs._dbSQLite import Database
-from playwright.sync_api import sync_playwright
 from libs._eanFinder import *
+from libs._clipboard import getContentFromClipboard
 
-pages = {
-    'products': 'afterbuy.de/afterbuy/shop/produkte.aspx?newsearch=1&DT=1',
-    'ebayLister': 'afterbuy.de/afterbuy/ebayliste2.aspx?newsearch=1&DT=1'
-}
+page = 'https://afterbuy.de/afterbuy/ebayliste2.aspx?newsearch=1&DT=1'
 
 def displayEbayLister(db: Database, context):
-    page = context.new_page()
-    page.goto(pages['products'])
-    element = page.locator("[name='ProductSearchMpn']")
-
-    element.fill('')
-    input()
+    url = getContentFromClipboard()
+    articleNumber = getArtNumFromUrl(url)
+    eanArr = artNumToEan(db, articleNumber)
+    ean = None
+    if len(eanArr) > 0:
+        ean = eanArr[0]
+    if ean != None:
+        try:
+            page = context.new_page()
+            page.goto(page)
+            element = page.locator("[name='lAWean']")
+            element.fill(ean)
+            page.click('#ctl00_innerContentPlaceHolder_AllBox_ebaylister_btn_Suchen')
+        except:
+            print('Ошибка при поиске товара в afterbuy')

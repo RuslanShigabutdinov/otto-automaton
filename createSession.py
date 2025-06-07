@@ -15,9 +15,11 @@ def insertLoginAfterbuy(page, server):
     page.wait_for_selector('#CybotCookiebotDialogBodyButtonDecline', state='attached')
     page.click('#CybotCookiebotDialogBodyButtonDecline')
     page.wait_for_selector('#Username', state='attached')
+    page.click('#StaySignedIn')
     page.fill('#Username', server['login'])
     page.fill('#Password', server['password'])
     page.click("button[name='B1']")
+    
 
 def insertOtp(page, server):
     generatedCode = generateTotp(server['secret'])

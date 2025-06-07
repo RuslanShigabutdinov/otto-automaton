@@ -2,6 +2,7 @@ import sqlite3
 import os
 import sys
 from typing import List, Optional
+from _path import currentPath
 
 def resource_path(relative_path):
     """ Возвращает путь к файлу, работает и в .py, и в .exe """
@@ -13,7 +14,7 @@ def resource_path(relative_path):
     return os.path.join(base_path, relative_path)
 
 class Database:
-    def __init__(self, db_path='sql.db'):
+    def __init__(self, db_path=f'{currentPath()}/sql.db'):
         self.conn = sqlite3.connect(resource_path(db_path))
         self.cursor = self.conn.cursor()
         self._prepare_schema()
@@ -79,8 +80,3 @@ class Database:
     def __del__(self):
         if hasattr(self, 'conn'):
             self.conn.close()
-
-
-if __name__ == "__main__":
-    db = Database()
-    print(db.showEan('S05E10ZC'))
